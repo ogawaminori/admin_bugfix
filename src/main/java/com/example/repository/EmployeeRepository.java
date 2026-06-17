@@ -24,6 +24,11 @@ public class EmployeeRepository {
 
     private final RowMapper<Employee> EMPLOYEE_ROW_MAPPER = new BeanPropertyRowMapper<>(Employee.class);
 
+    /**
+     * 従業員⼀覧情報を⼊社⽇順(降順)で取得する
+     * (従業員が存在しない場合はサイズ0件の従業員⼀覧を返す)
+     * @return　従業員情報
+     */
     public List<Employee> findAll() {
         String sql = "SELECT "
                 + "id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count "
@@ -32,6 +37,12 @@ public class EmployeeRepository {
         return employees;
     }
 
+    /**
+     * 主キーから従業員情報を取得する
+     * (従業員が存在しない場合はSpringが⾃動的に例外を発⽣します)
+     * @param id 従業員id
+     * @return　従業員情報
+     */
     public Employee load(Integer id) {
         String sql = "SELECT "
                 + "id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count "
@@ -46,6 +57,11 @@ public class EmployeeRepository {
         }
     }
 
+    /**
+     * 従業員情報を変更する
+     * (情報がない場合新規登録)
+     * @param employee　従業員情報
+     */
     public void update(Employee employee) {
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(employee);
         if (employee.getId() == null) {
