@@ -6,8 +6,8 @@ import java.util.Date;
  * 従業員情報を表すドメイン
  */
 public class Employee {
-    /** ID */
-    private Integer ID;
+    /** id */
+    private Integer id;
     /** 名前 */
     private String name;
     /** 画像 */
@@ -34,10 +34,10 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(Integer iD, String name, String image, String gender, Date hireDate, String mailAddress,
+    public Employee(Integer id, String name, String image, String gender, Date hireDate, String mailAddress,
             String zipCode, String address, String telephone, Integer salary, String characteristics,
             Integer depeendentsCount) {
-        ID = iD;
+        this.id = id;
         this.name = name;
         this.image = image;
         this.gender = gender;
@@ -51,12 +51,12 @@ public class Employee {
         this.depeendentsCount = depeendentsCount;
     }
 
-    public Integer getID() {
-        return ID;
+    public Integer getId() {
+        return id;
     }
 
-    public void setID(Integer iD) {
-        ID = iD;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -149,7 +149,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee [ID=" + ID + ", name=" + name + ", image=" + image + ", gender=" + gender + ", hireDate="
+        return "Employee  id=" + id + ", name=" + name + ", image=" + image + ", gender=" + gender + ", hireDate="
                 + hireDate + ", mailAddress=" + mailAddress + ", zipCode=" + zipCode + ", address=" + address
                 + ", telephone=" + telephone + ", Salary=" + Salary + ", Characteristics=" + Characteristics
                 + ", depeendentsCount=" + depeendentsCount + "]";
