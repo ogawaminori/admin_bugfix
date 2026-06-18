@@ -1,7 +1,8 @@
 package com.example.repository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -52,12 +53,14 @@ public class AdministratorRepository {
         MapSqlParameterSource param = new MapSqlParameterSource()
                 .addValue("mailAddress", mailAddress)
                 .addValue("password", password);
-        try {
-            return template.queryForObject(sql, param,ADMIN_ROW_MAPPER);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
+        List<Administrator> administratorList = template.query(sql, param, ADMIN_ROW_MAPPER);
+        if (administratorList.size() == 0) {
+            return null;
+        }else if(administratorList.size() >=2){
+            System.out.println("パスワードとメールアドレスが重複されて登録されています");
             return null;
         }
+        return administratorList.get(0);
     }
 
 }

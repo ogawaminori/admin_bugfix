@@ -2,6 +2,7 @@ package com.example.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class AdministratorController {
     private AdministratorService administratorService;
 
     /**
-     * ログイン画⾯を表⽰する処理を記述する 
+     * ログイン画⾯に遷移する 
      * @param form ログインフォーム
      * @return　login.html画面への遷移
      */
@@ -40,6 +41,24 @@ public class AdministratorController {
     @GetMapping("/toInsert")
     public String toInsert(InsertAdministratorForm form) {
         return "administrator/insert";
+    }
+
+    /**
+     * 管理者ログイン処理
+     * @param form　ログインフォーム
+     * @param model　管理者情報の格納されたModelオブジェクト
+     * @return　employee/showList.html画面への遷移
+     */
+    @PostMapping("/login")
+    public String login(LoginForm form,Model model){
+        Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
+        if(administrator == null){
+            model.addAttribute("error","メールアドレスまたはパスワードが不正です");
+            return "administrator/login";
+        }else{
+            model.addAttribute("administratorName",administrator);
+            return "redirect:/employee/showList";
+        }  
     }
 
     /**
