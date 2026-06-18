@@ -29,14 +29,14 @@ public class Employee {
     /** 特性 */
     private String Characteristics;
     /** 扶養人数 */
-    private Integer depeendentsCount;
+    private Integer dependentsCount;
 
     public Employee() {
     }
 
     public Employee(Integer id, String name, String image, String gender, Date hireDate, String mailAddress,
             String zipCode, String address, String telephone, Integer salary, String characteristics,
-            Integer depeendentsCount) {
+            Integer dependentsCount) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -48,7 +48,7 @@ public class Employee {
         this.telephone = telephone;
         Salary = salary;
         Characteristics = characteristics;
-        this.depeendentsCount = depeendentsCount;
+        this.dependentsCount = dependentsCount;
     }
 
     public Integer getId() {
@@ -139,12 +139,12 @@ public class Employee {
         Characteristics = characteristics;
     }
 
-    public Integer getDepeendentsCount() {
-        return depeendentsCount;
+    public Integer getDependentsCount() {
+        return dependentsCount;
     }
 
-    public void setDepeendentsCount(Integer depeendentsCount) {
-        this.depeendentsCount = depeendentsCount;
+    public void setDependentsCount(Integer dependentsCount) {
+        this.dependentsCount = dependentsCount;
     }
 
     @Override
@@ -152,7 +152,7 @@ public class Employee {
         return "Employee  id=" + id + ", name=" + name + ", image=" + image + ", gender=" + gender + ", hireDate="
                 + hireDate + ", mailAddress=" + mailAddress + ", zipCode=" + zipCode + ", address=" + address
                 + ", telephone=" + telephone + ", Salary=" + Salary + ", Characteristics=" + Characteristics
-                + ", depeendentsCount=" + depeendentsCount + "]";
+                + ", dependentsCount=" + dependentsCount + "]";
     }
 
 }
