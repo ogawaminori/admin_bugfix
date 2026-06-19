@@ -12,6 +12,8 @@ import com.example.form.InsertAdministratorForm;
 import com.example.form.LoginForm;
 import com.example.service.AdministratorService;
 
+import jakarta.servlet.http.HttpSession;
+
 /**
  * 管理者用Controller
  */
@@ -41,6 +43,18 @@ public class AdministratorController {
     @GetMapping("/toInsert")
     public String toInsert(InsertAdministratorForm form) {
         return "administrator/insert";
+    }
+
+    /**
+     * ログアウトする
+     * @param form　ログイン情報
+     * @param session　セッション情報
+     * @return　ログイン画面にリダイレクトする
+     */
+    @GetMapping("/logout")
+    public String logout (LoginForm form,HttpSession session){
+        session.invalidate();
+        return "redirect:/";
     }
 
     /**
