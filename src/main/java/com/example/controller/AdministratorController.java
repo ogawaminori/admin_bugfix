@@ -1,8 +1,13 @@
 package com.example.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +28,9 @@ public class AdministratorController {
 
     @Autowired
     private AdministratorService administratorService;
+
+    @Autowired 
+    private MessageSource messageSource;
 
     /**
      * ログイン画⾯に遷移する 
@@ -67,7 +75,8 @@ public class AdministratorController {
     public String login(LoginForm form,Model model){
         Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
         if(administrator == null){
-            model.addAttribute("error","メールアドレスまたはパスワードが不正です");
+            String errorMessage=messageSource.getMessage("error.login.mailPass",null,Locale.getDefault());
+            model.addAttribute("error",errorMessage);
             return "administrator/login";
         }else{
             model.addAttribute("administratorName",administrator);
@@ -82,7 +91,29 @@ public class AdministratorController {
      * @return ログイン画面("/")にリダイレクト
      */
     @PostMapping("/insert")
-    public String insert(InsertAdministratorForm form) {
+    public String insert(@Validated InsertAdministratorForm form,BindingResult result) {
+        //　バリデーションチェック
+        if(result.hasErrors()){
+            form.setPassword("");
+            form.setRepassword("");
+            return "administrator/insert";
+        }
+        //　メール重複確認
+        if(administratorService.isMailCheck(form.getMailAddress())==true){
+            result.rejectValue("mailAddress", "error.isMailCheck.mail","このメールアドレスは登録出来ません");
+            form.setPassword("");
+            form.setRepassword("");
+            return "administrator/insert";
+        }
+        //　確認用パスワードとの照合
+        if(!form.getPassword().equals(form.getRepassword())){
+            result.rejectValue("repassword", "error.isPasswordCheck.password", "パスワードが一致しません");
+            form.setPassword("");
+            form.setRepassword("");
+            return "administrator/insert";
+        }
+
+        //　正常系処理
         Administrator administrator = new Administrator();
         administrator.setName(form.getName());
         administrator.setMailAddress(form.getMailAddress());

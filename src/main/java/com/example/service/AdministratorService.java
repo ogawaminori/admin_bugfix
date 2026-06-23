@@ -34,4 +34,14 @@ public class AdministratorService {
     public Administrator login(String mailAddress,String password){
         return administratorRepository.findByMailAddressAndPassword(mailAddress, password);
     }
+
+    /**
+     * メールアドレス重複チェック
+     * @param mailAddress　管理者メールアドレス
+     * @return 管理者情報が存在(!= null)すればtrueを返す
+     */
+    public boolean isMailCheck(String mailAddress){
+        Administrator administrator=administratorRepository.findByMailAddress(mailAddress);
+        return administrator != null;
+    }
 }

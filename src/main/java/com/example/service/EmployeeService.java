@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.domain.Employee;
 import com.example.repository.EmployeeRepository;
 
+import jakarta.servlet.http.HttpSession;
+
 /**
  * 従業員用Serviceクラス
  */

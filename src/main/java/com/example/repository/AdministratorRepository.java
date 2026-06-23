@@ -41,12 +41,12 @@ public class AdministratorRepository {
     }
 
     /**
-     * メールアドレスとパスワードから管理者情報を取得する
+     * メールアドレスとパスワードから管理者情報を取得する(ログイン用)
      * (1件も存在しない場合はnullを返す)
      * 
      * @param mailAddress 管理者メールアドレス
      * @param password    管理者パスワード
-     * @return 管理者情報
+     * @return 特定の管理者情報
      */
     public Administrator findByMailAddressAndPassword(String mailAddress, String password) {
         String sql = "SELECT id, name, mail_address, password FROM Administrators WHERE mail_address=:mailAddress AND password=:password;";
@@ -56,11 +56,24 @@ public class AdministratorRepository {
         List<Administrator> administratorList = template.query(sql, param, ADMIN_ROW_MAPPER);
         if (administratorList.size() == 0) {
             return null;
-        }else if(administratorList.size() >=2){
-            System.out.println("パスワードとメールアドレスが重複されて登録されています");
-            return null;
         }
         return administratorList.get(0);
+    }
+
+
+    /**
+     * メールアドレスから管理者情報を取得する(重複チェック用)
+     * @param mailAddress　管理者メールアドレス
+     * @return　特定のメールアドレスの一致した管理者情報
+     */
+    public Administrator findByMailAddress(String mailAddress){
+        String sql="SELECT id,name,mail_address,password FROM Administrators WHERE mail_address=:mailAddress";
+        MapSqlParameterSource param =new MapSqlParameterSource().addValue("mailAddress", mailAddress);
+        List<Administrator> administrators = template.query(sql, param, ADMIN_ROW_MAPPER);
+        if (administrators.size() == 0) {
+            return null;
+        }
+        return administrators.get(0);
     }
 
 }
