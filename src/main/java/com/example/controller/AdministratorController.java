@@ -72,14 +72,14 @@ public class AdministratorController {
      * @return　employee/showList.html画面への遷移
      */
     @PostMapping("/login")
-    public String login(LoginForm form,Model model){
+    public String login(LoginForm form,Model model,HttpSession session){
         Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
         if(administrator == null){
             String errorMessage=messageSource.getMessage("error.login.mailPass",null,Locale.getDefault());
             model.addAttribute("error",errorMessage);
             return "administrator/login";
         }else{
-            model.addAttribute("administratorName",administrator);
+            session.setAttribute("administratorName",administrator);
             return "redirect:/employee/showList";
         }  
     }

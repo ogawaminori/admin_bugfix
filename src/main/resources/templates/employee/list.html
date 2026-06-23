@@ -59,7 +59,7 @@
               <li class="active"><a href="list.html">従業員管理</a></li>
             </ul>
             <p class="navbar-text navbar-right">
-              <span th:text="${session.administratorName + 'さん'}"
+              <span th:text="${session.administratorName.name + 'さん'}"
                 >山田さん</span
               >こんにちは！ &nbsp;&nbsp;&nbsp;
               <a href="../administrator/login.html" th:href="@{/logout}" class="navbar-link"
