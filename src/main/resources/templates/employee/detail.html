@@ -88,7 +88,7 @@
                 <tr>
                   <th nowrap>入社日</th>
                   <td>
-                    <span th:text="*{hireDate}">2012/11/29</span>
+                    <span th:text="*{#dates.format(hireDate,'yyyy年MM月dd日')}">2012/11/29</span>
                   </td>
                 </tr>
                 <tr>
@@ -118,7 +118,7 @@
                 <tr>
                   <th nowrap>給料</th>
                   <td>
-                    <span th:text="*{salary}">400000</span>円
+                    <span th:text="*{#numbers.formatInteger(salary,3,'COMMA')+'円'}">400000</span>
                   </td>
                 </tr>
                 <tr>
