@@ -24,7 +24,7 @@ public class InsertAdministratorForm {
     private String password;
 
     /** 確認用パスワード */
-    @NotBlank(message = "{error.notblank.password")
+    @NotBlank(message = "{error.notblank.password}")
     private String repassword;
 
     public InsertAdministratorForm() {
@@ -33,7 +33,7 @@ public class InsertAdministratorForm {
     public InsertAdministratorForm(@NotBlank(message = "{error.notblank.name}") String name,
             @NotBlank(message = "{error.notblank.mail}") @Email(message = "{error.email.mail}") String mailAddress,
             @NotBlank(message = "{error.notblank.password}") @Size(min = 8, max = 16, message = "{error.size.password}") String password,
-            @NotBlank(message = "{error.notblank.password") String repassword) {
+            @NotBlank(message = "{error.notblank.password}") String repassword) {
         this.name = name;
         this.mailAddress = mailAddress;
         this.password = password;

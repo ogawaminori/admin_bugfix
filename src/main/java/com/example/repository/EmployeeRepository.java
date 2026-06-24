@@ -68,7 +68,7 @@ public class EmployeeRepository {
         if (employee.getId() == null) {
             String sql = "INSERT INTO Employees "
                     + "(name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) "
-                    + "VALUES(:name,:image,:gender,:hireDate,:mailAddress,:zipCode,address:telephone,:salary,:characteristics,:dependentsCount)";
+                    + "VALUES(:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
             template.update(sql, param);
         } else {
             String sql = "UPDATE Employees SET "

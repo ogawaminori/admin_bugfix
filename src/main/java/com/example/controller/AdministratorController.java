@@ -29,7 +29,7 @@ public class AdministratorController {
     @Autowired
     private AdministratorService administratorService;
 
-    @Autowired 
+    @Autowired
     private MessageSource messageSource;
 
     /**
@@ -55,33 +55,35 @@ public class AdministratorController {
 
     /**
      * ログアウトする
-     * @param form　ログイン情報
-     * @param session　セッション情報
-     * @return　ログイン画面にリダイレクトする
+     * 
+     * @param form    ログイン情報
+     * @param session セッション情報
+     * @return ログイン画面にリダイレクトする
      */
     @GetMapping("/logout")
-    public String logout (LoginForm form,HttpSession session){
+    public String logout(LoginForm form, HttpSession session) {
         session.invalidate();
         return "redirect:/";
     }
 
     /**
      * 管理者ログイン処理
-     * @param form　ログインフォーム
-     * @param model　管理者情報の格納されたModelオブジェクト
-     * @return　employee/showList.html画面への遷移
+     * 
+     * @param form  ログインフォーム
+     * @param model 管理者情報の格納されたModelオブジェクト
+     * @return employee/showList.html画面への遷移
      */
     @PostMapping("/login")
-    public String login(LoginForm form,Model model,HttpSession session){
-        Administrator administrator = administratorService.login(form.getMailAddress(),form.getPassword());
-        if(administrator == null){
-            String errorMessage=messageSource.getMessage("error.login.mailPass",null,Locale.getDefault());
-            model.addAttribute("error",errorMessage);
+    public String login(LoginForm form, Model model, HttpSession session) {
+        Administrator administrator = administratorService.login(form.getMailAddress(), form.getPassword());
+        if (administrator == null) {
+            String errorMessage = messageSource.getMessage("error.login.mailPass", null, Locale.getDefault());
+            model.addAttribute("error", errorMessage);
             return "administrator/login";
-        }else{
-            session.setAttribute("administratorName",administrator);
+        } else {
+            session.setAttribute("administratorName", administrator);
             return "redirect:/employee/showList";
-        }  
+        }
     }
 
     /**
@@ -91,29 +93,29 @@ public class AdministratorController {
      * @return ログイン画面("/")にリダイレクト
      */
     @PostMapping("/insert")
-    public String insert(@Validated InsertAdministratorForm form,BindingResult result) {
-        //　バリデーションチェック
-        if(result.hasErrors()){
+    public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+        // バリデーションチェック
+        if (result.hasErrors()) {
             form.setPassword("");
             form.setRepassword("");
             return "administrator/insert";
         }
-        //　メール重複確認
-        if(administratorService.isMailCheck(form.getMailAddress())==true){
-            result.rejectValue("mailAddress", "error.isMailCheck.mail","このメールアドレスは登録出来ません");
+        // メール重複確認
+        if (administratorService.isMailCheck(form.getMailAddress()) == true) {
+            result.rejectValue("mailAddress", "error.isMailCheck.mail", "このメールアドレスは登録出来ません");
             form.setPassword("");
             form.setRepassword("");
             return "administrator/insert";
         }
-        //　確認用パスワードとの照合
-        if(!form.getPassword().equals(form.getRepassword())){
+        // 確認用パスワードとの照合
+        if (!form.getPassword().equals(form.getRepassword())) {
             result.rejectValue("repassword", "error.isPasswordCheck.password", "パスワードが一致しません");
             form.setPassword("");
             form.setRepassword("");
             return "administrator/insert";
         }
 
-        //　正常系処理
+        // 正常系処理
         Administrator administrator = new Administrator();
         administrator.setName(form.getName());
         administrator.setMailAddress(form.getMailAddress());
