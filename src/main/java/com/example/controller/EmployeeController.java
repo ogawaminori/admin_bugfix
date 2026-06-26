@@ -63,7 +63,7 @@ public class EmployeeController {
         List<Employee> employeeSearchList = employeeService.searchName(searchName);
         if (searchName.isEmpty()) {
             employeeSearchList = employeeService.showList();
-        }else if (employeeSearchList.isEmpty()){
+        } else if (employeeSearchList.isEmpty()) {
             String emptyMessage = messageSource.getMessage("empty.name", null, Locale.getDefault());
             model.addAttribute("emptyMessage", emptyMessage);
             employeeSearchList = employeeService.showList();
@@ -80,10 +80,13 @@ public class EmployeeController {
      */
     @PostMapping("/update")
     public String update(UpdateEmployeeForm form) {
-        Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
-        employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
-        employeeService.update(employee);
-        return "redirect:/employee/showList";
+        if (form.getDependentsCount() == null || form.getDependentsCount().isEmpty()) {
+            return "redirect:/employee/showList";
+        } else {
+            Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
+            employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
+            employeeService.update(employee);
+            return "redirect:/employee/showList";
+        }
     }
-
 }
