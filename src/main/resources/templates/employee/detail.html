@@ -130,11 +130,8 @@
                 <tr>
                   <th nowrap>扶養人数</th>
                   <td>
-                    <label class="control-label" 従業員ID style="color: red" for="dependentsCount"></label>
+                    <label class="control-label" 従業員ID style="color: red" for="dependentsCount" th:errors="${updateEmployeeForm.dependentsCount}"></label>
                     <input type="hidden" th:field="*{id}" />
-                    <!-- リクエストスコープのため更新後リダイレクトにより
-                     　　　Form内のデータは消えるため再度詳細画面を開いても何も表示されない
-                     　　反映のためにはth:field="*{dependentsCount}にする -->
                      <input type="text" class="form-control" id="dependentsCount" name="dependentsCount" th:value="${updateEmployeeForm.dependentsCount}" th:placeholder="*{dependentsCount}"/>
                   </td>
                 </tr>

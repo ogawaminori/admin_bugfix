@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,7 +69,7 @@ public class EmployeeController {
             model.addAttribute("emptyMessage", emptyMessage);
             employeeSearchList = employeeService.showList();
         }
-        model.addAttribute("employeeList", employeeSearchList);
+        model.addAttribute("employeeSearchList", employeeSearchList);
         return "employee/list";
     }
 
@@ -79,9 +80,13 @@ public class EmployeeController {
      * @return /employee/showList画面への遷移
      */
     @PostMapping("/update")
-    public String update(UpdateEmployeeForm form) {
+    public String update(@Validated UpdateEmployeeForm form, BindingResult result,Model model) {
         if (form.getDependentsCount() == null || form.getDependentsCount().isEmpty()) {
             return "redirect:/employee/showList";
+        } else if (result.hasErrors()) {
+            Employee employee =employeeService.showDetail(Integer.parseInt(form.getId()));
+            model.addAttribute("employee",employee);
+            return "employee/detail";
         } else {
             Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
             employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
