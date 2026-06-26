@@ -1,8 +1,10 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,27 +25,40 @@ public class EmployeeService {
 
     /**
      * ⼊社⽇順(降順)の従業員⼀覧を出⼒する
+     * 
      * @return ⼊社⽇順(降順)の従業員⼀覧の出力結果
      */
-    public List<Employee> showList(){
-        return employeeRepository.findAll();        
+    public List<Employee> showList() {
+        return employeeRepository.findAll();
     }
 
     /**
      * 従業員情報を取得する
+     * 
      * @param id 従業員id
-     * @return　従業員情報の出力結果
+     * @return 従業員情報の出力結果
      */
-    public Employee showDetail(Integer id){
+    public Employee showDetail(Integer id) {
         return employeeRepository.load(id);
     }
 
     /**
+     * 従業員名を曖昧検索する
+     * 
+     * @param searchName 検索単語
+     * @return 検索結果
+     */
+    public List<Employee> searchName(String searchName) {
+        return employeeRepository.findByName(searchName);
+    }
+
+    /**
      * 従業員情報を更新する
+     * 
      * @param employee パラメーター用従業員オブジェクト
      */
-    public void update (Employee employee){
+    public void update(Employee employee) {
         employeeRepository.update(employee);
     }
-    
+
 }

@@ -51,10 +51,25 @@ public class EmployeeRepository {
                 + "FROM Employees WHERE id=:id";
         MapSqlParameterSource param = new MapSqlParameterSource().addValue("id", id);
         List<Employee> employeeList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
-        if(employeeList.size()==0){
+        if (employeeList.size() == 0) {
             return null;
-        }return employeeList.get(0);
+        }
+        return employeeList.get(0);
 
+    }
+
+    /**
+     * 従業員名曖昧検索
+     * @param name　検索
+     * @return　従業員名曖昧検索結果
+     */
+    public List<Employee> findByName(String searchName) {
+        String sql = "SELECT "
+                + "id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count "
+                + "FROM Employees WHERE name LIKE :name ORDER BY hire_date,id";
+        MapSqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+searchName+"%");
+        List<Employee> employeeNameList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+        return employeeNameList;
     }
 
     /**
