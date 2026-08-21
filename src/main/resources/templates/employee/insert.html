@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>従業員管理システム</title>
+  <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" />
+  <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}" />
+  </head>
+<body>
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span> <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="list.html" th:href="@{/employee/showList}">
+            <img src="../../static/img/header_logo_small.png" th:src="@{/img/header_logo_small.png}" />
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員管理</a></li>
+          </ul>
+          <p class="navbar-text navbar-right">
+            <span th:text="${session.administratorName.name + 'さん'}">山田さん</span>こんにちは！ &nbsp;&nbsp;&nbsp;
+            <a href="../administrator/login.html" th:href="@{/logout}" class="navbar-link">ログアウト</a>
+          </p>
+        </div>
+      </div>
+    </nav>
+
+    <ol class="breadcrumb">
+      <li class="active">
+        <a href="list.html" th:href="@{/employee/showList}">従業員リスト</a>
+      </li>
+    </ol>
+    
+    <div class="well">
+      <form action="list.html" th:action="@{/employee/insert}" th:object="${insertEmployeeForm}" method="post" enctype="multipart/form-data">
+        <fieldset>
+          <legend>従業員登録<br /></legend>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="name"> 氏名: </label>
+                <label class="error-messages" th:errors="*{name}">氏名を入力してください</label>
+                <input type="text" class="form-control" placeholder="山田太郎" th:field="*{name}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="image"> 画像: </label>
+                <label class="error-messages" th:errors="*{image}">画像を入力してください</label>
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                  <label class="btn btn-primary" style="margin-bottom: 0; cursor: pointer;">
+                    ファイルを選択
+                    <input type="file" id="image" style="display: none;" th:field="*{image}" />
+                  </label>
+                  <span id="file-name" style="color: #555;">選択されていません</span>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="gender"> 性別: </label>
+                <label class="error-messages" th:errors="*{gender}">性別を入力してください</label>
+                <select class="form-control" th:field="*{gender}">
+                  <option value="男性">男性</option>
+                  <option value="女性">女性</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="hireDate"> 入社日: </label>
+                <label class="error-messages" th:errors="*{hireDate}">入社日を入力してください</label>
+                <input type="date" class="form-control" th:field="*{hireDate}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="mailAddress"> メールアドレス: </label>
+                <label class="error-messages" th:errors="*{mailAddress}">メールアドレスを入力してください</label>
+                <input type="text" class="form-control" placeholder="yamada@mail.com" th:field="*{mailAddress}" />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="zipCode"> 郵便番号: </label>
+                <label class="error-messages" th:errors="*{zipCode}">郵便番号を入力してください</label>
+                <input type="text" class="form-control" placeholder="111-2233" th:field="*{zipCode}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="address"> 住所: </label>
+                <label class="error-messages" th:errors="*{address}">住所を入力してください</label>
+                <input type="text" class="form-control" placeholder="東京都新宿区新宿1-2-3" th:field="*{address}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="telephone"> 電話番号: </label>
+                <label class="error-messages" th:errors="*{telephone}">電話番号を入力してください</label>
+                <input type="text" class="form-control" placeholder="03-1234-5678" th:field="*{telephone}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="salary"> 給料: </label>
+                <label class="error-messages" th:errors="*{salary}">給料を入力してください</label>
+                <input type="text" class="form-control" placeholder="200000" th:field="*{salary}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="characteristics"> 特性: </label>
+                <label class="error-messages" th:errors="*{characteristics}">特性を入力してください</label>
+                <input type="text" class="form-control" placeholder="明るい性格です" th:field="*{characteristics}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <label for="dependentsCount"> 扶養人数: </label>
+                <label class="error-messages" th:errors="*{dependentsCount}">扶養人数を入力してください</label>
+                <input type="text" class="form-control" placeholder="2" th:field="*{dependentsCount}" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary">登録</button>
+                <a href="list.html" th:href="@{/employee/showList}" class="btn btn-default" style="margin-left: 10px;">戻る</a>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="../../static/js/bootstrap.min.js"></script>
+  <script src="../../static/js/file-select.js" th:src="@{/js/file-select.js}"></script>
+</body>
+</html>

@@ -9,14 +9,14 @@ public class UpdateEmployeeForm {
     /** 従業員ID */
     private String id;
     /** 扶養人数 */
-    @Pattern(regexp = "^[0-9]*$", message = "{error.pattern.dependentsCount}")
+    @Pattern(regexp = "^[0-9]*$", message = "{error.pattern.number}")
     private String dependentsCount;
 
     public UpdateEmployeeForm() {
     }
 
     public UpdateEmployeeForm(String id,
-            @Pattern(regexp = "^[0-9]*$", message = "error.pattern.dependentsCount") String dependentsCount) {
+            @Pattern(regexp = "^[0-9]*$", message = "error.pattern.number") String dependentsCount) {
         this.id = id;
         this.dependentsCount = dependentsCount;
     }

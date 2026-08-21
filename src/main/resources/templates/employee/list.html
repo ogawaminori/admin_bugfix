@@ -37,6 +37,9 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="list.html" th:href="@{/employee/showList}">従業員管理</a></li>
           </ul>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="insert.html" th:href="@{/employee/toInsert}">従業員登録</a></li>
+          </ul>
           <p class="navbar-text navbar-right">
             <span th:text="${session.administratorName.name + 'さん'}">山田さん</span>こんにちは！ &nbsp;&nbsp;&nbsp;
             <a href="../administrator/login.html" th:href="@{/logout}" class="navbar-link">ログアウト</a>
@@ -54,7 +57,7 @@
       </li>
     </ol>
     <form class="mb-4" action="list.html" th:action="@{/employee/searchName}" method="get" style="text-align: center;">
-      <input type="text" name="searchName" th:value="${param.searchName}" class="form-control"
+      <input type="text" name="searchName" th:value="${param.searchName}" class="form-control" placeholder="検索したい従業員名を入力してください"
         style="width: 200px; display: inline-block; vertical-align: middle;">
       <button type="submit" class="btn btn-secondary" style="vertical-align: middle;">検索</button>
     </form>

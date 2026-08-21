@@ -102,14 +102,14 @@ public class AdministratorController {
         }
         // メール重複確認
         if (administratorService.isMailCheck(form.getMailAddress()) == true) {
-            result.rejectValue("mailAddress", "error.isMailCheck.mail", "このメールアドレスは登録出来ません");
+            result.rejectValue("mailAddress", "error.isMailCheck.mail", "このメールアドレスは登録出来ません。");
             form.setPassword("");
             form.setRepassword("");
             return "administrator/insert";
         }
         // 確認用パスワードとの照合
         if (!form.getPassword().equals(form.getRepassword())) {
-            result.rejectValue("repassword", "error.isPasswordCheck.password", "パスワードが一致しません");
+            result.rejectValue("repassword", "error.isPasswordCheck.password", "パスワードが一致しません。");
             form.setPassword("");
             form.setRepassword("");
             return "administrator/insert";

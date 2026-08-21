@@ -1,6 +1,7 @@
 package com.example.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -60,17 +61,40 @@ public class EmployeeRepository {
 
     /**
      * 従業員名曖昧検索
-     * @param name　検索
-     * @return　従業員名曖昧検索結果
+     * 
+     * @param name 検索
+     * @return 従業員名曖昧検索結果
      */
     public List<Employee> findByName(String searchName) {
         String sql = "SELECT "
                 + "id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count "
                 + "FROM Employees WHERE name LIKE :name ORDER BY hire_date,id";
-        MapSqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+searchName+"%");
+        MapSqlParameterSource param = new MapSqlParameterSource().addValue("name", "%" + searchName + "%");
         List<Employee> employeeNameList = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
         return employeeNameList;
     }
+
+    /**
+     * 従業員idの最大値を取得
+     * @return　id最大値
+     */
+    public Integer findMaxId() {
+        String selectSql = "SELECT COALESCE(MAX(id), 0) FROM Employees;";
+        Integer maxId = template.queryForObject(selectSql,Map.of(), Integer.class);
+        return maxId;
+    }
+
+    /**
+     * 従業員登録
+     * @param employee　登録先のデータ型
+     */
+    public void insert(Employee employee){
+        BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+        String sql = "INSERT INTO Employees "
+                    + "(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) "
+                    + "VALUES(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
+           template.update(sql, param);
+    } 
 
     /**
      * 従業員情報を変更する
@@ -82,8 +106,8 @@ public class EmployeeRepository {
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(employee);
         if (employee.getId() == null) {
             String sql = "INSERT INTO Employees "
-                    + "(name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) "
-                    + "VALUES(:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
+                    + "(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count) "
+                    + "VALUES(:id,:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
             template.update(sql, param);
         } else {
             String sql = "UPDATE Employees SET "

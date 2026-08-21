@@ -1,17 +1,19 @@
 package com.example.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.domain.Employee;
 import com.example.repository.EmployeeRepository;
-
-import jakarta.servlet.http.HttpSession;
 
 /**
  * 従業員用Serviceクラス
@@ -50,6 +52,28 @@ public class EmployeeService {
      */
     public List<Employee> searchName(String searchName) {
         return employeeRepository.findByName(searchName);
+    }
+    
+    /**
+     * 従業員登録
+     * @param employee　登録先のデータ型
+     */
+    public synchronized void insert(Employee employee,MultipartFile imageFile){
+        employee.setId(employeeRepository.findMaxId()+1);
+
+        String originalName=imageFile.getOriginalFilename();
+        String ext =originalName.substring(originalName.lastIndexOf("."));
+        String imageName =employee.getId()+ext;
+        
+        Path staticPath =Paths.get("src/main/resources/static/img_employee/"+imageName);
+        try {
+            Files.copy(imageFile.getInputStream(),staticPath,StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        employee.setImage(imageName);
+        employeeRepository.insert(employee);
     }
 
     /**
